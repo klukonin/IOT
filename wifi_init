@@ -1,8 +1,8 @@
 -- Engineered by rutierut, inspired by MikeV, improved by chadouming
-broker = "10.0.1.32"     -- IP or hostname of MQTT broker
+broker = "192.168.3.103"     -- IP or hostname of MQTT broker
 mqttPort = 1883          -- MQTT port (default 1883)
-userID = ""              -- username for authentication if required
-userPWD  = ""            -- user password if needed for security
+userID = "urfu"              -- username for authentication if required
+userPWD  = "iot2018"            -- user password if needed for security
 clientID = "ESP1"        -- Device ID
 GPIO2 = 4                -- IO Index of GPIO2 which is connected to the button
 ready = 0
@@ -10,12 +10,12 @@ previousButtonPress = 0
 gpio.mode(GPIO2, gpio.INPUT)
 
 -- Wifi credentials
-SSID = ""
-wifiPWD = ""
-
 function wifi_connect()
    wifi.setmode(wifi.STATION)
-   wifi.sta.config(SSID,wifiPWD)
+   station_cfg={}
+   station_cfg.ssid="AIR"
+   station_cfg.pwd="1234567890"
+   wifi.sta.config(station_cfg)
    wifi.sta.connect()
    ip = wifi.sta.getip()
    if ip ~= nil then
@@ -46,7 +46,7 @@ function button_pressed()
   if delta >= 200000 then
   print('Button pressed')
   publishing = 1;
-  m:publish("Frontdoor","Button Pressed", 0, 0,
+  m:publish("sensor/button","Button Pressed", 0, 0,
     function(conn)
       -- Print confirmation of data published
       print(" Message published!")
